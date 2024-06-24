@@ -32,8 +32,8 @@ public abstract class AbstractCloudStorageService {
      * @return 返回上传路径
      */
     public String getPath(String prefix, String suffix) {
-        String type = "";
-        if (Arrays.asList("pdf", "zip", "word", "ppt").contains(suffix)) {
+        String type = "other";
+        if (Arrays.asList("pdf", "zip", "docx", "ppt").contains(suffix)) {
             type = "File";
         }
         if (Arrays.asList("png", "jpeg", "jpg", "gif").contains(suffix)) {
