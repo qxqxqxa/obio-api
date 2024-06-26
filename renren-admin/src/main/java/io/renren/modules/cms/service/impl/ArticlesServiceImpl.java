@@ -47,9 +47,10 @@ public class ArticlesServiceImpl extends BaseServiceImpl<ArticlesDao, ArticlesEn
         if (Objects.nonNull(categoriesEntity)) {
             queryWrapper.eq(ArticlesEntity::getCategoryId, categoriesEntity.getId());
         }
-        String obj = params.get("categoryId").toString();
+
+        Object obj = params.get("categoryId");
         queryWrapper.eq(ArticlesEntity::getDel, 0);
-        queryWrapper.eq(StringUtils.isNotBlank(obj), ArticlesEntity::getCategoryId, obj);
+        queryWrapper.eq(Objects.nonNull(obj) && !"0".equals(String.valueOf(obj)), ArticlesEntity::getCategoryId, obj);
         queryWrapper.eq(Objects.nonNull(params.get("status")) && !"0".equals(String.valueOf(params.get("status"))), ArticlesEntity::getStatus, params.get("status"));
         queryWrapper.like(Objects.nonNull(params.get("title")) && !String.valueOf(params.get("title")).isEmpty(), ArticlesEntity::getTitle, params.get("title"));
 
