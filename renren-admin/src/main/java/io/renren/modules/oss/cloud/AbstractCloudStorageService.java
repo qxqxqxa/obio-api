@@ -32,12 +32,12 @@ public abstract class AbstractCloudStorageService {
      * @return 返回上传路径
      */
     public String getPath(String prefix, String suffix) {
-        String type = "other";
+        String type = "";
         if (Arrays.asList("pdf", "zip", "docx", "ppt").contains(suffix)) {
-            type = "File";
+            type = "file";
         }
         if (Arrays.asList("png", "jpeg", "jpg", "gif").contains(suffix)) {
-            type = "Picture";
+            type = "image";
         }
 
         //生成uuid
