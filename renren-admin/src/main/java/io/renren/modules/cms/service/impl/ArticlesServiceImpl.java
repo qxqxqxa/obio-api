@@ -15,6 +15,7 @@ import io.renren.modules.cms.service.ArticlesService;
 import io.renren.modules.cms.service.CategoriesService;
 import io.renren.modules.cms.vo.NewsVo;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
@@ -37,7 +38,6 @@ public class ArticlesServiceImpl extends BaseServiceImpl<ArticlesDao, ArticlesEn
     public PageData<ArticlesDTO> page(Map<String, Object> params) {
         //分页
         IPage<ArticlesEntity> page = getPage(params, null, false);
-        page.orders().add(OrderItem.desc("event_time"));
         page.orders().add(OrderItem.desc("pub_date"));
 
         //查询
@@ -47,9 +47,9 @@ public class ArticlesServiceImpl extends BaseServiceImpl<ArticlesDao, ArticlesEn
         if (Objects.nonNull(categoriesEntity)) {
             queryWrapper.eq(ArticlesEntity::getCategoryId, categoriesEntity.getId());
         }
-        Object obj = params.get("categoryId");
+        String obj = params.get("categoryId").toString();
         queryWrapper.eq(ArticlesEntity::getDel, 0);
-        queryWrapper.eq(Objects.nonNull(obj) && !"0".equals(String.valueOf(obj)), ArticlesEntity::getCategoryId, obj);
+        queryWrapper.eq(StringUtils.isNotBlank(obj), ArticlesEntity::getCategoryId, obj);
         queryWrapper.eq(Objects.nonNull(params.get("status")) && !"0".equals(String.valueOf(params.get("status"))), ArticlesEntity::getStatus, params.get("status"));
         queryWrapper.like(Objects.nonNull(params.get("title")) && !String.valueOf(params.get("title")).isEmpty(), ArticlesEntity::getTitle, params.get("title"));
 
