@@ -98,7 +98,7 @@ public class CategoriesController {
         return new Result<CategoriesDTO>().ok(null);
     }
 
-    @GetMapping("/all/list")
+    @GetMapping("/public/list")
     @Operation(summary = "分类列表")
     @Parameter(name = "pid", description = "上级ID", required = false)
     public Result<List<CategoriesDTO>> list(Long pid) {
