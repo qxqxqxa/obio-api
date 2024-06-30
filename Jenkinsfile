@@ -4,6 +4,7 @@ pipeline {
         stage('Build') { 
             steps {
                 sh '''
+                pwd
                 cp /root/config/application-dev.yml ./renren-admin/src/main/resources/
                 mvn install
                 mvn clean package
