@@ -32,7 +32,7 @@ public class ArticlesEntity extends BaseEntity {
     private Integer views;
     private Integer commentsCount;
     private Date pubDate;
-    private Date eventTime;
+    private String eventTime;
     private String location;
 
     @TableField(fill = FieldFill.INSERT_UPDATE)

@@ -105,4 +105,15 @@ public class CategoriesController {
         List<CategoriesDTO> list = categoriesService.getList(pid);
         return new Result<List<CategoriesDTO>>().ok(list);
     }
+    @GetMapping("/all/list")
+    @Operation(summary = "分类列表")
+    @Parameter(name = "pid", description = "上级ID", required = false)
+    public Result<List<CategoriesDTO>> allList(Long pid) {
+        List<CategoriesDTO> list = categoriesService.getList(pid);
+        CategoriesDTO element = new CategoriesDTO();
+        element.setId(0L);
+        element.setName("All");
+        list.add(0, element);
+        return new Result<List<CategoriesDTO>>().ok(list);
+    }
 }

@@ -33,11 +33,11 @@ public abstract class AbstractCloudStorageService {
      */
     public String getPath(String prefix, String suffix) {
         String type = "";
-        if (Arrays.asList("pdf", "zip", "word", "ppt").contains(suffix)) {
-            type = "File";
+        if (Arrays.asList("pdf", "zip", "docx", "ppt").contains(suffix)) {
+            type = "file";
         }
         if (Arrays.asList("png", "jpeg", "jpg", "gif").contains(suffix)) {
-            type = "Picture";
+            type = "image";
         }
 
         //生成uuid

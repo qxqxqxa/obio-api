@@ -38,5 +38,9 @@ public class ArticlesDTO implements Serializable {
   @Schema(description = "发布日期") private Date pubDate;
     @Schema(description = "创建人")
     private String creator;
+  @Schema(description = "事件时间")
+  private String eventTime;
+  @Schema(description = "位置")
+  private String location;
 
 }

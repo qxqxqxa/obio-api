@@ -2,7 +2,7 @@ package io.renren.modules.cms.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import io.renren.common.constant.Constant;
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import io.renren.common.page.PageData;
 import io.renren.common.service.impl.BaseServiceImpl;
 import io.renren.common.utils.ConvertUtils;
@@ -15,6 +15,7 @@ import io.renren.modules.cms.service.ArticlesService;
 import io.renren.modules.cms.service.CategoriesService;
 import io.renren.modules.cms.vo.NewsVo;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
@@ -36,16 +37,17 @@ public class ArticlesServiceImpl extends BaseServiceImpl<ArticlesDao, ArticlesEn
     @Override
     public PageData<ArticlesDTO> page(Map<String, Object> params) {
         //分页
-        IPage<ArticlesEntity> page = getPage(params, Constant.CREATE_DATE, false);
-
+        IPage<ArticlesEntity> page = getPage(params, null, false);
+        page.orders().add(OrderItem.desc("pub_date"));
 
         //查询
         LambdaQueryWrapper<ArticlesEntity> queryWrapper = new LambdaQueryWrapper<>();
 
-        CategoriesEntity categoriesEntity = categoriesDao.selectOne(new LambdaQueryWrapper<CategoriesEntity>().eq(CategoriesEntity::getName, params.get("type")));
+        CategoriesEntity categoriesEntity = categoriesDao.selectOne(new LambdaQueryWrapper<CategoriesEntity>().eq(CategoriesEntity::getPid, 100).eq(CategoriesEntity::getName, params.get("type")));
         if (Objects.nonNull(categoriesEntity)) {
             queryWrapper.eq(ArticlesEntity::getCategoryId, categoriesEntity.getId());
         }
+
         Object obj = params.get("categoryId");
         queryWrapper.eq(ArticlesEntity::getDel, 0);
         queryWrapper.eq(Objects.nonNull(obj) && !"0".equals(String.valueOf(obj)), ArticlesEntity::getCategoryId, obj);
