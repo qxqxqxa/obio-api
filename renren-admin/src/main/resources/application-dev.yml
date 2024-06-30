@@ -2,10 +2,14 @@ spring:
   datasource:
     druid:
       #MySQL
+      # driver-class-name: com.mysql.cj.jdbc.Driver
+      # url: jdbc:mysql://39.107.45.65:3300/obio?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&nullCatalogMeansCurrent=true
+      # username: qjia_frame
+      # password: qjia_frame@JIhsiels.com
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://39.107.45.65:3300/obio?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&nullCatalogMeansCurrent=true
-      username: qjia_frame
-      password: qjia_frame@JIhsiels.com
+      url: jdbc:mysql://localhost:3306/obio?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&nullCatalogMeansCurrent=true
+      username: obio
+      password: obio1234
       #达梦8
 #      driver-class-name: dm.jdbc.driver.DmDriver
 #      url: jdbc:dm://localhost:5236/security_enterprise?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&nullCatalogMeansCurrent=true&compatibleMode=oracle
