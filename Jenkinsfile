@@ -7,7 +7,7 @@ pipeline {
                 cp /var/lib/jenkins/workspace/application-dev.yml ./renren-admin/src/main/resources/
                 mvn install
                 mvn clean package
-                nohup java -jar ./renren-admin/target/obio-admin.jar > process.log 2>&1 &
+                java -jar ./renren-admin/target/obio-admin.jar
                 ''' 
             }
         }
