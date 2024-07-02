@@ -58,4 +58,12 @@ public class LocalCloudStorageService extends AbstractCloudStorageService {
     public String uploadSuffix(InputStream inputStream, String suffix) {
         return upload(inputStream, getPath(config.getLocalPrefix(), suffix));
     }
+
+    public void deleteFile(String url) {
+        String path = url.replaceAll(config.getLocalDomain(), config.getLocalPath());
+        File file = new File(path);
+        if(file.exists() && file.isFile()){
+            file.delete();
+        }
+    }
 }

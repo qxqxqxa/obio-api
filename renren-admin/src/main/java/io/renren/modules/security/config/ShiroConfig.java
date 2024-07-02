@@ -71,10 +71,12 @@ public class ShiroConfig {
         filterMap.put("/cms/service/public/**", "anon");
         filterMap.put("/cms/categories/public/**", "anon");
         filterMap.put("/sys/config/info", "anon");
+        filterMap.put("/cms/categories/all/list", "anon");
         filterMap.put("/favicon.ico", "anon");
         filterMap.put("/pay/alipay/**", "anon");
         filterMap.put("/pay/wechat/**", "anon");
         filterMap.put("/mp/portal/**", "anon");
+        filterMap.put("/sys/oss/test", "anon");
         filterMap.put("/ureport/**", "anon");
         filterMap.put("/**", "oauth2");
         shiroFilter.setFilterChainDefinitionMap(filterMap);
