@@ -87,4 +87,8 @@ public abstract class AbstractCloudStorageService {
      */
     public abstract String uploadSuffix(InputStream inputStream, String suffix);
 
+    public void deleteFile(String url) {
+
+    }
+
 }

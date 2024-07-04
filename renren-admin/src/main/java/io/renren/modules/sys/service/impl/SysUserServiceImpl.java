@@ -53,10 +53,10 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUserEntit
         IPage<SysUserEntity> page = getPage(params, "t1.create_date", false);
 
         //普通管理员，只能查询所属部门及子部门的数据
-        UserDetail user = SecurityUser.getUser();
-        if (Objects.equals(user.getSuperAdmin(), SuperAdminEnum.NO.value())) {
-            params.put("deptIdList", sysDeptService.getSubDeptIdList(user.getDeptId()));
-        }
+//        UserDetail user = SecurityUser.getUser();
+//        if (Objects.equals(user.getSuperAdmin(), SuperAdminEnum.NO.value())) {
+//            params.put("deptIdList", sysDeptService.getSubDeptIdList(user.getDeptId()));
+//        }
 
         //查询
         List<SysUserEntity> list = baseDao.getList(params);

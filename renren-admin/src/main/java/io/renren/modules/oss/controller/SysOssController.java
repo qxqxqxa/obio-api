@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -120,6 +121,72 @@ public class SysOssController {
         return new Result<>().ok(list);
     }
 
+    @GetMapping("test")
+    public Result<?> test() {
+        CloudStorageConfig config = sysParamsService.getValueObject(Constant.CLOUD_STORAGE_CONFIG_KEY, CloudStorageConfig.class);
+        String localPath = config.getLocalPath();
+        String prefix = config.getLocalPrefix();
+        if (StringUtils.isNotBlank(prefix)) {
+            localPath += prefix;
+        }
+        File file = new File(localPath);
+        List<Object> list = new LinkedList<>();
+        if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            if (Objects.nonNull(files)) {
+                for (File listFile : files) {
+                    HashMap<Object, Object> map = new HashMap<>();
+                    map.put("label", listFile.getName());
+                    map.put("type",listFile.isDirectory());
+                    map.put("path",listFile.getPath());
+                    list.add(map);
+                    if (Objects.nonNull(file) && file.isDirectory()) {
+                        File[] fs = listFile.listFiles();
+                        for (File file1 : fs) {
+                            HashMap<Object, Object> hashMap = new HashMap<>();
+                            hashMap.put("label", file1.getName());
+                            hashMap.put("type",file1.isDirectory());
+                            hashMap.put("path",file1.getPath());
+                            list.add(hashMap);
+                            if (Objects.nonNull(file1) && file1.isDirectory()) {
+                                File[] files1 = file1.listFiles();
+                                for (File file2 : files1) {
+                                    HashMap<Object, Object> hashMap2 = new HashMap<>();
+                                    hashMap2.put("label", file2.getName());
+                                    hashMap2.put("type",file2.isDirectory());
+                                    hashMap2.put("path",file2.getPath());
+                                    String fullPath = file2.getPath();
+                                    // 查找uploads首次出现的位置
+                                    int index = fullPath.indexOf("\\uploads\\");
+                                    // 如果找到了uploads
+                                    if (index != -1) {
+                                        // 截取uploads之后的部分
+                                        String relativePath = fullPath.substring(index + "\\uploads\\".length());
+                                        relativePath = relativePath.replaceAll("\\\\", "/");
+                                        System.out.println(relativePath); // 输出: image\20240615\Picture5.png
+                                        hashMap2.put("ossPath",relativePath);
+                                        //保存文件信息
+                                        SysOssEntity ossEntity = new SysOssEntity();
+                                        ossEntity.setName(file2.getName());
+                                        ossEntity.setUrl("https://file.qjia.tech/obio-img/uploads/"+relativePath);
+                                        ossEntity.setCreateDate(new Date());
+                                        boolean insert = sysOssService.insert(ossEntity);
+                                        hashMap2.put("insertFlag",insert);
+                                    }
+
+                                    list.add(hashMap2);
+                                }
+                            }
+
+                        }
+                    }
+
+                }
+            }
+        }
+        return new Result<>().ok(list);
+    }
+
     private List<Object> childrenFile(File file) {
         LinkedList<Object> children = new LinkedList<>();
         if (Objects.nonNull(file) && file.isDirectory()) {
@@ -187,6 +254,10 @@ public class SysOssController {
     @LogOperation("删除")
     @RequiresPermissions("sys:oss:all")
     public Result delete(@RequestBody Long[] ids) {
+        for (Serializable serializable : ids) {
+            SysOssEntity t = sysOssService.selectById(serializable);
+            OSSFactory.build().deleteFile(t.getUrl());
+        }
         sysOssService.deleteBatchIds(Arrays.asList(ids));
 
         return new Result();
