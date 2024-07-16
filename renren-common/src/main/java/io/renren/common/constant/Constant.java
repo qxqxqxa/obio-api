@@ -98,6 +98,10 @@ public interface Constant {
      * 代码生成参数KEY
      */
     String DEV_TOOLS_PARAM_KEY = "DEV_TOOLS_PARAM_KEY";
+    /**
+     * 客服邮箱
+     */
+    String TO_EMAIL = "to_email";
 
     /**
      * 定时任务状态

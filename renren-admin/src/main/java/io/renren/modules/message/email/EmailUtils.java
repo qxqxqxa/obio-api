@@ -53,8 +53,13 @@ public class EmailUtils {
         sender.setPassword(config.getPassword());
         sender.setDefaultEncoding("Utf-8");
         Properties p = new Properties();
-        p.setProperty("mail.smtp.timeout", "10000");
-        p.setProperty("mail.smtp.auth", "false");
+//        p.setProperty("mail.smtp.timeout", "10000");
+//        p.setProperty("mail.smtp.auth", "false");
+        p.put("mail.smtp.auth", "true"); // 通常是true，除非你的SMTP服务器不需要认证
+        p.put("mail.smtp.starttls.enable", "false"); // 对于SSL，我们不需要STARTTLS
+        p.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        p.put("mail.smtp.socketFactory.port", config.getPort()); // 显式设置SSL端口
+        p.put("mail.smtp.socketFactory.fallback", "false");
         sender.setJavaMailProperties(p);
         return sender;
     }
@@ -71,7 +76,7 @@ public class EmailUtils {
     public boolean sendMail(Long templateId, String[] to, String[] cc, Map<String, Object> params) throws Exception {
         SysMailTemplateEntity template = sysMailTemplateDao.selectById(templateId);
         if (template == null) {
-            throw new RenException(ErrorCode.MAIL_TEMPLATE_NOT_EXISTS);
+            throw new RenException("The email template does not exist.");
         }
 
         EmailConfig config = sysParamsService.getValueObject(KEY, EmailConfig.class);
@@ -89,7 +94,12 @@ public class EmailUtils {
             messageHelper.setCc(cc);
         }
         //主题
-        messageHelper.setSubject(template.getSubject());
+        if (params.containsKey("user")) {
+            messageHelper.setSubject(template.getSubject() + " " + params.get("user"));
+        } else {
+            messageHelper.setSubject(template.getSubject());
+        }
+
 
         //邮件正文
         String content = getFreemarkerContent(template.getContent(), params);
