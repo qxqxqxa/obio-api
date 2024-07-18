@@ -58,7 +58,7 @@ public class MailTemplateController {
             @Parameter(name = Constant.ORDER, description = "排序方式，可选值(asc、desc)"),
             @Parameter(name = "name", description = "name")
     })
-    @RequiresPermissions("sys:mail:all")
+//    @RequiresPermissions("sys:mail:all")
     public Result<PageData<SysMailTemplateDTO>> page(@Parameter(hidden = true) @RequestParam Map<String, Object> params) {
         PageData<SysMailTemplateDTO> page = sysMailTemplateService.page(params);
 
@@ -67,7 +67,7 @@ public class MailTemplateController {
 
     @GetMapping("/config")
     @Operation(summary = "获取配置信息")
-    @RequiresPermissions("sys:mail:all")
+//    @RequiresPermissions("sys:mail:all")
     public Result<EmailConfig> config() {
         EmailConfig config = sysParamsService.getValueObject(KEY, EmailConfig.class);
 
@@ -77,7 +77,7 @@ public class MailTemplateController {
     @PostMapping("/saveConfig")
     @Operation(summary = "保存配置信息")
     @LogOperation("保存配置信息")
-    @RequiresPermissions("sys:mail:all")
+//    @RequiresPermissions("sys:mail:all")
     public Result saveConfig(@RequestBody EmailConfig config) {
         //校验数据
         ValidatorUtils.validateEntity(config);
@@ -89,7 +89,7 @@ public class MailTemplateController {
 
     @GetMapping("{id}")
     @Operation(summary = "信息")
-    @RequiresPermissions("sys:mail:all")
+//    @RequiresPermissions("sys:mail:all")
     public Result<SysMailTemplateDTO> info(@PathVariable("id") Long id) {
         SysMailTemplateDTO sysMailTemplate = sysMailTemplateService.get(id);
 
@@ -99,7 +99,7 @@ public class MailTemplateController {
     @PostMapping
     @Operation(summary = "保存")
     @LogOperation("保存")
-    @RequiresPermissions("sys:mail:all")
+//    @RequiresPermissions("sys:mail:all")
     public Result save(SysMailTemplateDTO dto) {
         //校验类型
         ValidatorUtils.validateEntity(dto, AddGroup.class, DefaultGroup.class);
@@ -112,7 +112,7 @@ public class MailTemplateController {
     @PutMapping
     @Operation(summary = "修改")
     @LogOperation("修改")
-    @RequiresPermissions("sys:mail:all")
+//    @RequiresPermissions("sys:mail:all")
     public Result update(SysMailTemplateDTO dto) {
         //校验类型
         ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
@@ -125,7 +125,7 @@ public class MailTemplateController {
     @DeleteMapping
     @Operation(summary = "删除")
     @LogOperation("删除")
-    @RequiresPermissions("sys:mail:all")
+//    @RequiresPermissions("sys:mail:all")
     public Result delete(@RequestBody Long[] ids) {
         sysMailTemplateService.deleteBatchIds(Arrays.asList(ids));
 
@@ -135,7 +135,7 @@ public class MailTemplateController {
     @PostMapping("/send")
     @Operation(summary = "发送邮件")
     @LogOperation("发送邮件")
-    @RequiresPermissions("sys:mail:all")
+//    @RequiresPermissions("sys:mail:all")
     public Result send(Long id, String mailTo, String mailCc, String params) throws Exception {
         boolean flag = sysMailTemplateService.sendMail(id, mailTo, mailCc, params);
         if (flag) {

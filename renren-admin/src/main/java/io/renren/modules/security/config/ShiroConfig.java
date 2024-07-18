@@ -72,6 +72,7 @@ public class ShiroConfig {
         filterMap.put("/cms/categories/public/**", "anon");
         filterMap.put("/sys/config/info", "anon");
         filterMap.put("/cms/categories/all/list", "anon");
+        filterMap.put("/cms/inquiry/save", "anon");
         filterMap.put("/favicon.ico", "anon");
         filterMap.put("/pay/alipay/**", "anon");
         filterMap.put("/pay/wechat/**", "anon");
